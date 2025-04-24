@@ -1,0 +1,11 @@
+{
+  "block": "D2_Bay_2",
+  "date": "2025-04-20",
+  "index": "NDVI",
+  "mean": 0.7078405022621155,
+  "p80": 0.7898130416870117,
+  "confidence_score": 100,
+  "nan_coverage": 0.0,
+  "fallback_used": false,
+  "fallback_date": null
+}

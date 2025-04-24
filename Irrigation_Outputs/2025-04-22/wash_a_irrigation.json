@@ -1,0 +1,48 @@
+{
+  "block": "wash_a",
+  "date": "2025-04-22",
+  "ndvi": 0.6827206611633301,
+  "evi": 0.40792015194892883,
+  "gndvi": 0.6952075958251953,
+  "ndre": 0.4716199040412903,
+  "kc": 0.629,
+  "kc_components": {
+    "weights": {
+      "ndvi": 0.4,
+      "ndre": 0.4,
+      "gndvi": 0.1,
+      "evi": 0.1
+    },
+    "raw_kc": 0.572,
+    "final_kc": 0.629
+  },
+  "eto": 1.97,
+  "etc": 1.24,
+  "efficiency": 0.75,
+  "irrigation_type": "overhead_spray",
+  "application_rate_mm_hr": 5,
+  "irrigation_mm": 1.65,
+  "irrigation_minutes": 19.8,
+  "confidence_score": 100,
+  "rain_mm": 0,
+  "fallback_used": false,
+  "crop": "citrus",
+  "crop_stage": "unspecified",
+  "features": {
+    "rainfall_override": true,
+    "stress_adjustment": true,
+    "solar_adjustment": false,
+    "sensor_integration": false
+  },
+  "notes": [
+    "Pooling visible at lower end",
+    "Monitor re-growth after harvest"
+  ],
+  "split_recommended": true,
+  "split_into": [
+    9.9,
+    9.9
+  ],
+  "priority_score": 1.24,
+  "why_this_recommendation": "ETo = 1.97 mm. NDVI = 0.6827206611633301 | EVI = 0.40792015194892883 | GNDVI = 0.6952075958251953 | NDRE = 0.4716199040412903. No rainfall applied."
+}

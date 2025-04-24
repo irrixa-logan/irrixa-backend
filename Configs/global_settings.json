@@ -1,0 +1,15 @@
+{
+    "use_crop_stage_scaling": true,
+    "auto_sync_dashboard": true,
+    "rain_override_enabled": true,
+    "ndvi_mode": "average",
+    "default_index_weights": {
+      "beans": { "ndvi": 0.3, "evi": 0.3, "gndvi": 0.2, "ndre": 0.2 },
+      "broccoli": { "ndvi": 0.3, "evi": 0.3, "gndvi": 0.2, "ndre": 0.2 },
+      "citrus": { "ndvi": 0.4, "ndre": 0.4, "gndvi": 0.1, "evi": 0.1 },
+      "grapes": { "ndvi": 0.4, "ndre": 0.4, "gndvi": 0.1, "evi": 0.1 },
+      "almonds": { "ndvi": 0.4, "ndre": 0.4, "gndvi": 0.1, "evi": 0.1 },
+      "default": { "ndvi": 1.0 }
+    }
+  }
+  

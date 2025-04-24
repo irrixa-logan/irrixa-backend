@@ -1,0 +1,20 @@
+{
+  "soil_type": "sandy_loam",
+  "irrigation_type": "overhead_spray",
+  "efficiency": 0.95,
+  "ndvi_to_kc_mode": "mean",
+  "crop_stage": "vegetative",
+  "features": {
+    "rainfall_override": true,
+    "stress_adjustment": true,
+    "solar_adjustment": false,
+    "sensor_integration": false
+  },
+  "notes": [
+    "Pooling visible at lower end",
+    "Monitor re-growth after harvest"
+  ],
+  "block_name": "D2_Bay_5",
+  "crop": "broccoli",
+  "application_rate_mm_hr": 5
+}

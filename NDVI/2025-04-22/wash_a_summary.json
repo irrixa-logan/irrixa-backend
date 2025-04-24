@@ -1,0 +1,12 @@
+{
+  "block": "wash_a",
+  "date": "2025-04-22",
+  "ndvi": 0.6827206611633301,
+  "evi": 0.40792015194892883,
+  "gndvi": 0.6952075958251953,
+  "ndre": 0.4716199040412903,
+  "confidence_score": 100,
+  "nan_coverage": 0.0,
+  "fallback_used": false,
+  "image_date": "2025-04-21"
+}

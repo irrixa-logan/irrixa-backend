@@ -1,0 +1,12 @@
+{
+  "block": "D2_Bay_11",
+  "date": "2025-04-22",
+  "ndvi": 0.8378943800926208,
+  "evi": 0.7469813227653503,
+  "gndvi": 0.7775229215621948,
+  "ndre": 0.6218879818916321,
+  "confidence_score": 100,
+  "nan_coverage": 0.0,
+  "fallback_used": false,
+  "image_date": "2025-04-21"
+}

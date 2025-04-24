@@ -1,0 +1,22 @@
+{
+  "soil_type": "sand",
+  "irrigation_type": "overhead_spray",
+  "efficiency": 0.95,
+  "ndvi_to_kc_mode": "mean",
+  "crop_stage": "vegetative",
+  "features": {
+    "rainfall_override": true,
+    "stress_adjustment": true,
+    "solar_adjustment": false,
+    "sensor_integration": false
+  },
+  "notes": [
+    "Pooling visible at lower end",
+    "Monitor re-growth after harvest"
+  ],
+  "block_name": "D2_Bay_3",
+  "crop": "beans",
+  "application_rate_mm_hr": 5,
+  "name": "D2_Bay_3",
+  "raw_mm_per_m": 55
+}

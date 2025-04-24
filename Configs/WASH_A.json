@@ -1,0 +1,22 @@
+{
+  "block_name": "WASH_A",
+  "crop": "citrus",
+  "growth_stage": "mature",
+  "soil_type": "sandy_loam",
+  "RAW_mm": 30,
+  "irrigation_type": "overhead_spray",
+  "efficiency": 0.75,
+  "ndvi_to_kc_mode": "mean",
+  "features": {
+    "rainfall_override": true,
+    "stress_adjustment": true,
+    "solar_adjustment": false,
+    "sensor_integration": false
+  },
+  "notes": [
+    "Pooling visible at lower end",
+    "Monitor re-growth after harvest"
+  ],
+  "crop_stage": "unspecified",
+  "application_rate_mm_hr": 5
+}

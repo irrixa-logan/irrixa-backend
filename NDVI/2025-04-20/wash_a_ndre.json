@@ -1,0 +1,11 @@
+{
+  "block": "wash_a",
+  "date": "2025-04-20",
+  "index": "NDRE",
+  "mean": 0.5000098943710327,
+  "p80": 0.5345708727836609,
+  "confidence_score": 100,
+  "nan_coverage": 0.0,
+  "fallback_used": false,
+  "fallback_date": null
+}

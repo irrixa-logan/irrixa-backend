@@ -1,0 +1,38 @@
+[
+  {
+    "date": "2025-04-22",
+    "temp_min": 25.7,
+    "temp_max": 25.7,
+    "humidity": 93,
+    "wind_speed": 3,
+    "solar_ghi": 20,
+    "precip_mm": 0,
+    "eto_estimated": 1.96,
+    "rain_yesterday": 0,
+    "rain_forecast": 0
+  },
+  {
+    "date": "2025-04-23",
+    "temp_min": 28.3,
+    "temp_max": 28.3,
+    "humidity": 83,
+    "wind_speed": 4.3,
+    "solar_ghi": 20,
+    "precip_mm": 0,
+    "eto_estimated": 2.08,
+    "rain_yesterday": 0,
+    "rain_forecast": 0
+  },
+  {
+    "date": "2025-04-24",
+    "temp_min": 23.1,
+    "temp_max": 23.1,
+    "humidity": 98,
+    "wind_speed": 5.5,
+    "solar_ghi": 20,
+    "precip_mm": 4.48,
+    "eto_estimated": 1.84,
+    "rain_yesterday": 0,
+    "rain_forecast": 0
+  }
+]

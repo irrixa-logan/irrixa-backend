@@ -1,0 +1,48 @@
+{
+  "block": "D2_Bay_16",
+  "date": "2025-04-22",
+  "ndvi": 0.6784014105796814,
+  "evi": 0.49353981018066406,
+  "gndvi": 0.6938320994377136,
+  "ndre": 0.42293477058410645,
+  "kc": 0.719,
+  "kc_components": {
+    "weights": {
+      "ndvi": 0.3,
+      "evi": 0.3,
+      "gndvi": 0.2,
+      "ndre": 0.2
+    },
+    "raw_kc": 0.575,
+    "final_kc": 0.719
+  },
+  "eto": 1.97,
+  "etc": 1.42,
+  "efficiency": 0.95,
+  "irrigation_type": "overhead_spray",
+  "application_rate_mm_hr": 5,
+  "irrigation_mm": 1.49,
+  "irrigation_minutes": 17.9,
+  "confidence_score": 100,
+  "rain_mm": 0,
+  "fallback_used": false,
+  "crop": "broccoli",
+  "crop_stage": "vegetative",
+  "features": {
+    "rainfall_override": true,
+    "stress_adjustment": true,
+    "solar_adjustment": false,
+    "sensor_integration": false
+  },
+  "notes": [
+    "Pooling visible at lower end",
+    "Monitor re-growth after harvest"
+  ],
+  "split_recommended": true,
+  "split_into": [
+    8.9,
+    8.9
+  ],
+  "priority_score": 1.42,
+  "why_this_recommendation": "ETo = 1.97 mm. NDVI = 0.6784014105796814 | EVI = 0.49353981018066406 | GNDVI = 0.6938320994377136 | NDRE = 0.42293477058410645. Crop stage: vegetative. No rainfall applied."
+}

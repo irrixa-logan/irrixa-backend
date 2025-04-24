@@ -1,0 +1,31 @@
+{
+  "block": "D2_Bay_12",
+  "date": "2025-04-20",
+  "ndvi": 0.7900908589363098,
+  "kc": 0.988,
+  "eto": 1.82,
+  "etc": 1.8,
+  "efficiency": 0.95,
+  "irrigation_type": "overhead_spray",
+  "application_rate_mm_hr": 10,
+  "irrigation_mm": 1.5099999999999998,
+  "irrigation_minutes": 9.1,
+  "confidence_score": 100,
+  "rain_mm": 0.38,
+  "fallback_used": false,
+  "crop": "broccoli",
+  "crop_stage": "vegetative",
+  "features": {
+    "rainfall_override": true,
+    "stress_adjustment": true,
+    "solar_adjustment": false,
+    "sensor_integration": false
+  },
+  "notes": [
+    "Pooling visible at lower end",
+    "Monitor re-growth after harvest"
+  ],
+  "split_recommended": false,
+  "split_into": [],
+  "priority_score": 1.8
+}

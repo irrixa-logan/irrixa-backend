@@ -1,0 +1,54 @@
+{
+  "block": "D2_Bay_2",
+  "date": "2025-04-24",
+  "ndvi": 0.7623990178108215,
+  "ndvi_avg": 0.7623990178108215,
+  "ndvi_p80": null,
+  "evi": 0.5883439183235168,
+  "gndvi": 0.7319442629814148,
+  "ndre": 0.5292795300483704,
+  "kc": 0.822,
+  "eto": 3.5,
+  "etc": 2.88,
+  "efficiency": 0.95,
+  "irrigation_type": "overhead_spray",
+  "application_rate_mm_hr": 5,
+  "irrigation_mm": 0.0,
+  "irrigation_minutes": 0.0,
+  "confidence_score": 100,
+  "rain_mm": 4.48,
+  "fallback_used": false,
+  "crop": "beans",
+  "crop_stage": "vegetative",
+  "features": {
+    "rainfall_override": true,
+    "stress_adjustment": true,
+    "solar_adjustment": false,
+    "sensor_integration": false
+  },
+  "notes": [
+    "Pooling visible at lower end",
+    "Monitor re-growth after harvest"
+  ],
+  "priority_score": 2.88,
+  "why_this_recommendation": "ETo = 3.5 mm | NDVI change: 0.0% | Crop stage: vegetative | Rainfall override enabled",
+  "soil_type": "sand",
+  "raw_mm_used": 55,
+  "split_recommended": false,
+  "split_into": [],
+  "ndvi_change": 0.0,
+  "stress_flag": false,
+  "ndvi_display_mode": "average",
+  "kc_components": {
+    "weights": {
+      "ndvi": 0.3,
+      "evi": 0.3,
+      "gndvi": 0.2,
+      "ndre": 0.2
+    },
+    "raw_kc": 0.657,
+    "final_kc": 0.822
+  },
+  "actual_irrigation_mm": null,
+  "irrigation_gap": null
+}

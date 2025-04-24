@@ -1,0 +1,48 @@
+{
+  "block": "D2_Bay_3",
+  "date": "2025-04-22",
+  "ndvi": 0.817844033241272,
+  "evi": 0.6573266983032227,
+  "gndvi": 0.764096736907959,
+  "ndre": 0.5729092359542847,
+  "kc": 0.887,
+  "kc_components": {
+    "weights": {
+      "ndvi": 0.3,
+      "evi": 0.3,
+      "gndvi": 0.2,
+      "ndre": 0.2
+    },
+    "raw_kc": 0.71,
+    "final_kc": 0.887
+  },
+  "eto": 1.97,
+  "etc": 1.75,
+  "efficiency": 0.95,
+  "irrigation_type": "overhead_spray",
+  "application_rate_mm_hr": 5,
+  "irrigation_mm": 1.84,
+  "irrigation_minutes": 22.1,
+  "confidence_score": 100,
+  "rain_mm": 0,
+  "fallback_used": false,
+  "crop": "beans",
+  "crop_stage": "vegetative",
+  "features": {
+    "rainfall_override": true,
+    "stress_adjustment": true,
+    "solar_adjustment": false,
+    "sensor_integration": false
+  },
+  "notes": [
+    "Pooling visible at lower end",
+    "Monitor re-growth after harvest"
+  ],
+  "split_recommended": true,
+  "split_into": [
+    11.1,
+    11.1
+  ],
+  "priority_score": 1.75,
+  "why_this_recommendation": "ETo = 1.97 mm. NDVI = 0.817844033241272 | EVI = 0.6573266983032227 | GNDVI = 0.764096736907959 | NDRE = 0.5729092359542847. Crop stage: vegetative. No rainfall applied."
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "date": "2025-04-20",
+    "temperature": 22.1,
+    "humidity": 85,
+    "wind_speed": 8.5,
+    "precip_mm": 0.13,
+    "solar_ghi": null,
+    "eto_estimated": 1.8
+  },
+  {
+    "date": "2025-04-21",
+    "temperature": 20.9,
+    "humidity": 91,
+    "wind_speed": 5,
+    "precip_mm": 0,
+    "solar_ghi": null,
+    "eto_estimated": 1.74
+  },
+  {
+    "date": "2025-04-22",
+    "temperature": 25.9,
+    "humidity": 92,
+    "wind_speed": 2.8,
+    "precip_mm": 0,
+    "solar_ghi": null,
+    "eto_estimated": 1.97
+  }
+]

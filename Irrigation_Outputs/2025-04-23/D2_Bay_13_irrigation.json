@@ -1,0 +1,55 @@
+{
+  "block": "D2_Bay_13",
+  "date": "2025-04-23",
+  "ndvi": 0.8323220014572144,
+  "ndvi_avg": 0.8323220014572144,
+  "ndvi_p80": null,
+  "evi": 0.706769585609436,
+  "gndvi": 0.7707700133323669,
+  "ndre": 0.5979632139205933,
+  "kc": 0.919,
+  "eto": 2.11,
+  "etc": 1.94,
+  "efficiency": 0.95,
+  "irrigation_type": "overhead_spray",
+  "application_rate_mm_hr": 5,
+  "irrigation_mm": 2.04,
+  "irrigation_minutes": 24.5,
+  "confidence_score": 100,
+  "rain_mm": 0,
+  "fallback_used": false,
+  "crop": "broccoli",
+  "crop_stage": "vegetative",
+  "features": {
+    "rainfall_override": true,
+    "stress_adjustment": true,
+    "solar_adjustment": false,
+    "sensor_integration": false
+  },
+  "notes": [
+    "Pooling visible at lower end",
+    "Monitor re-growth after harvest"
+  ],
+  "priority_score": 1.94,
+  "why_this_recommendation": "ETo = 2.11 mm | NDVI change: 0.0% | Crop stage: vegetative | No rainfall applied",
+  "soil_type": "sandy_loam",
+  "raw_mm_used": 55,
+  "split_recommended": true,
+  "split_into": [
+    12.2,
+    12.2
+  ],
+  "ndvi_change": 0.0,
+  "stress_flag": false,
+  "ndvi_display_mode": "average",
+  "kc_components": {
+    "weights": {
+      "ndvi": 0.3,
+      "evi": 0.3,
+      "gndvi": 0.2,
+      "ndre": 0.2
+    },
+    "raw_kc": 0.735,
+    "final_kc": 0.919
+  }
+}
