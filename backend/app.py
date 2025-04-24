@@ -7,7 +7,10 @@ from datetime import date
 
 # === Init Flask ===
 app = Flask(__name__)
-CORS(app)
+from flask_cors import CORS
+
+CORS(app, resources={r"/api/*": {"origins": "https://irrixa-frontend.onrender.com"}})
+
 
 # === Set Paths ===
 CONFIG_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "Configs"))
