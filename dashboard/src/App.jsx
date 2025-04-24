@@ -1,4 +1,4 @@
-// ✅ Irrixa Dashboard – Full Version w/ Toggleable NDVI Maps + Fixes Restored
+ // ✅ Irrixa Dashboard – Full Version w/ Toggleable NDVI Maps + Fixes Restored
 import React, { useEffect, useState } from 'react';
 import './index.css';
 
@@ -79,7 +79,7 @@ function BlockCard({ block, refreshData }) {
   const imgBasePath = `/NDVI/${todayStr}/${blockName}`;
 
   const saveConfig = async () => {
-    const res = await fetch(`http://localhost:5001/api/save_config/${block.block}`, {
+    const res = await fetch(`https://irrixa-backend.onrender.com/api/save_config/${block.block}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(edited)
@@ -97,7 +97,7 @@ function BlockCard({ block, refreshData }) {
   const saveActualIrrigation = async () => {
     const parsed = parseFloat(actualInput);
     if (isNaN(parsed)) return alert("⚠️ Enter a valid number");
-    const res = await fetch("http://localhost:5001/api/save_actual_irrigation", {
+    const res = await fetch("https://irrixa-backend.onrender.com/api/save_actual_irrigation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ block: block.block, date: todayStr, mm: parsed })
@@ -195,13 +195,13 @@ export default function App() {
       <h1 className="text-3xl font-bold text-center mb-6">💦 Irrixa Smart Irrigation Dashboard</h1>
       <div className="flex justify-center gap-4 mb-6">
         <button onClick={async () => {
-          const res = await fetch("http://localhost:5001/api/refresh_weather", { method: "POST" });
+          const res = await fetch("https://irrixa-backend.onrender.com/api/refresh_weather", { method: "POST" });
           if (res.ok) window.location.reload();
           else alert("❌ Weather update failed");
         }} className="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">🌤️ Refresh Weather</button>
 
         <button onClick={async () => {
-          const res = await fetch("http://localhost:5001/api/run_engine", { method: "POST" });
+          const res = await fetch("https://irrixa-backend.onrender.com/api/run_engine", { method: "POST" });
           if (res.ok) window.location.reload();
           else alert("❌ Engine run failed");
         }} className="bg-green-600 text-white px-4 py-2 rounded shadow hover:bg-green-700">🔁 Run Irrigation Engine</button>
