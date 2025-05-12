@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: irrixa-backend
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: python api_server.py
+    autoDeploy: false
+    envVars:
+      - key: PYTHONPATH
+        value: .
