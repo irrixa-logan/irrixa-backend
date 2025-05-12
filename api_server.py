@@ -33,3 +33,4 @@ def refresh_weather():
         return jsonify({"status": "weather refreshed"}), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+
