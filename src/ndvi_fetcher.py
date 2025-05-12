@@ -18,29 +18,21 @@ ENABLE_EVI = True
 ENABLE_GNDVI = True
 SAVE_PNG = True
 
-# === Absolute .env loader ===
-from pathlib import Path
-base_dir = Path(__file__).resolve().parents[2]
-env_path = base_dir / ".env"
-
 import os
 
 CLIENT_ID = os.getenv("SENTINELHUB_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SENTINELHUB_CLIENT_SECRET")
 
-print("🔒 Using environment variables:")
-print("CLIENT_ID =", CLIENT_ID[:8] + "...")
-print("CLIENT_SECRET =", "SET" if CLIENT_SECRET else "MISSING")
-
 if not CLIENT_ID or not CLIENT_SECRET:
     raise Exception("❌ SentinelHub credentials missing in environment variables")
 
-
 print("🔒 Using environment variables:")
 print("CLIENT_ID =", CLIENT_ID[:8] + "...")
 print("CLIENT_SECRET =", "SET" if CLIENT_SECRET else "MISSING")
 
-print(f"⛨️  Using SentinelHub Client ID: {CLIENT_ID[:8]}... OK")
+# Set base_dir using __file__ safely for rest of script
+from pathlib import Path
+base_dir = Path(__file__).resolve().parents[2]
 
 # === Output directories ===
 today = datetime.date.today()
