@@ -122,7 +122,13 @@ for file in summary_files:
     raw_used = config.get("raw_mm_per_m", 55)
 
     weights = global_config["default_index_weights"].get(crop, global_config["default_index_weights"].get("default", {"ndvi": 1, "evi": 0, "gndvi": 0, "ndre": 0}))
-    raw_kc = ndvi * weights["ndvi"] + evi * weights["evi"] + gndvi * weights["gndvi"] + ndre * weights["ndre"]
+    raw_kc = (
+    ndvi * weights.get("ndvi", 0) +
+    evi * weights.get("evi", 0) +
+    gndvi * weights.get("gndvi", 0) +
+    ndre * weights.get("ndre", 0)
+)
+
 
     if crop in ["beans", "broccoli"]:
         kc = min(round(raw_kc * 1.25, 3), 1.25)
