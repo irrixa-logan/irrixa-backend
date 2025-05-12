@@ -28,8 +28,13 @@ import os
 CLIENT_ID = os.getenv("SENTINELHUB_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SENTINELHUB_CLIENT_SECRET")
 
+print("🔒 Using environment variables:")
+print("CLIENT_ID =", CLIENT_ID[:8] + "...")
+print("CLIENT_SECRET =", "SET" if CLIENT_SECRET else "MISSING")
+
 if not CLIENT_ID or not CLIENT_SECRET:
-    raise Exception("❌ Missing SentinelHub credentials in environment variables")
+    raise Exception("❌ SentinelHub credentials missing in environment variables")
+
 
 print("🔒 Using environment variables:")
 print("CLIENT_ID =", CLIENT_ID[:8] + "...")
