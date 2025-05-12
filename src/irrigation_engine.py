@@ -130,6 +130,7 @@ for file in summary_files:
 )
 
 
+
     if crop in ["beans", "broccoli"]:
         kc = min(round(raw_kc * 1.25, 3), 1.25)
     elif crop in ["citrus", "grapes", "almonds"]:
