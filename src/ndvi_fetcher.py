@@ -164,8 +164,7 @@ else:
     score = 100 if nan_coverage <= 10 else 75 if nan_coverage <= 30 else 50 if nan_coverage <= 50 else 0
     fallback_used = False
     fallback_date = None
-
-        fallback_data = load_last_valid_json(block_name, index_type) if (np.isnan(np.nanmean(data)) or nan_coverage > 50) else None
+    fallback_data = load_last_valid_json(block_name, index_type) if (np.isnan(np.nanmean(data)) or nan_coverage > 50) else None
 
         if fallback_data:
             mean = fallback_data["mean"]
