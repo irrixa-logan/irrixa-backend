@@ -1,4 +1,4 @@
- # ✅ Upgraded Irrixa MK1 – weather_fetcher.py (Tomorrow.io Free Tier + Full Integration)
+ # ✅ Irrixa MK1 – Upgraded weather_fetcher.py (Tomorrow.io Free Tier, Full Field Set)
 import os
 import requests
 import datetime
@@ -22,7 +22,7 @@ base_dir = os.path.dirname(os.path.dirname(__file__))
 weather_dir = os.path.join(base_dir, "Weather", str(today))
 os.makedirs(weather_dir, exist_ok=True)
 
-# === Date Logic ===
+# === Date Strings ===
 today_str = str(today)
 yesterday_str = str(today - datetime.timedelta(days=1))
 tomorrow_str = str(today + datetime.timedelta(days=1))
@@ -32,14 +32,31 @@ now = datetime.datetime.utcnow()
 start_time = (now - datetime.timedelta(days=1)).isoformat() + "Z"
 end_time = (now + datetime.timedelta(days=1)).isoformat() + "Z"
 
-# === Fields to Fetch ===
+# === Free Tier Safe Fields ===
 fields = [
-    "temperature", "humidity", "windSpeed", "precipitationIntensity", "solarGHI"
+    "temperature",
+    "humidity",
+    "windSpeed",
+    "solarGHI",
+    "precipitationAccumulation",
+    "evapotranspiration",
+    "cloudCover",
+    "pressureSeaLevel",
+    "dewPoint",
+    "windDirection",
+    "visibility",
+    "sunriseTime",
+    "sunsetTime"
 ]
 
 # === API Request ===
-url = f"https://api.tomorrow.io/v4/timelines?location={LAT},{LON}&fields={','.join(fields)}&timesteps=1d&units=metric&apikey={API_KEY}&startTime={start_time}&endTime={end_time}"
-print("🌤️  Requesting 3-day weather data from Tomorrow.io")
+url = (
+    f"https://api.tomorrow.io/v4/timelines?"
+    f"location={LAT},{LON}&fields={','.join(fields)}"
+    f"&timesteps=1d&units=metric&apikey={API_KEY}"
+    f"&startTime={start_time}&endTime={end_time}"
+)
+print(f"🌤️  Requesting 3-day weather data from Tomorrow.io for ({LAT}, {LON})")
 response = requests.get(url)
 if response.status_code != 200:
     print("❌ API Error:", response.status_code, response.text)
@@ -50,49 +67,54 @@ weather_data = response.json()
 # === Process Data ===
 try:
     intervals = weather_data["data"]["timelines"][0]["intervals"]
+    print("🔍 Intervals fetched:", intervals)
+    if not intervals:
+        raise Exception("❌ No weather intervals returned from Tomorrow.io")
+
     final = []
 
     for entry in intervals:
         date_str = entry["startTime"].split("T")[0]
         values = entry["values"]
 
-        temp = values.get("temperature")
-        solar = values.get("solarGHI") or 20
-
-        # Fake ETo Estimate (Hargreaves-style)
-        eto = round(0.0023 * ((temp or 20) + 17) * solar, 2)
-
         item = {
             "date": date_str,
-            "temp_min": temp,  # Free tier only has single temp
-            "temp_max": temp,
-            "humidity": values.get("humidity"),
-            "wind_speed": values.get("windSpeed"),
-            "solar_ghi": solar,
-            "precip_mm": values.get("precipitationIntensity"),
-            "eto_estimated": eto,
+            "temp_avg": values.get("temperature") or 20,
+            "humidity": values.get("humidity") or 60,
+            "wind_speed": values.get("windSpeed") or 2,
+            "solar_ghi": values.get("solarGHI") or 20,
+            "precip_mm": values.get("precipitationAccumulation") or 0.0,
+            "eto": values.get("evapotranspiration") or 0.0,
+            "cloud_cover": values.get("cloudCover") or 40,
+            "pressure": values.get("pressureSeaLevel") or 1010,
+            "dew_point": values.get("dewPoint") or 12,
+            "wind_direction": values.get("windDirection") or 180,
+            "visibility_km": values.get("visibility") or 10,
+            "sunrise": values.get("sunriseTime") or "",
+            "sunset": values.get("sunsetTime") or "",
             "rain_yesterday": 0,
             "rain_forecast": 0
         }
 
+        print(f"📅 {date_str} | ETo: {item['eto']} mm | Rain: {item['precip_mm']} mm | Solar: {item['solar_ghi']} W/m²")
         final.append(item)
 
-    # Add 72h logic (yesterday/today/tomorrow)
+    # === Add 72h logic (yesterday + tomorrow rain)
     for day in final:
         if day["date"] == today_str:
             for other in final:
                 if other["date"] == yesterday_str:
-                    day["rain_yesterday"] = other.get("precip_mm", 0)
+                    day["rain_yesterday"] = other.get("precip_mm", 0.0)
                 if other["date"] == tomorrow_str:
-                    day["rain_forecast"] = other.get("precip_mm", 0)
+                    day["rain_forecast"] = other.get("precip_mm", 0.0)
 
-    # Save JSON
+    # === Save JSON to Irrixa Weather folder
     save_path = os.path.join(weather_dir, "weather_data.json")
     with open(save_path, "w") as f:
         json.dump(final, f, indent=2)
     print(f"✅ Weather data saved to {save_path}")
 
-    # Dashboard Copy
+    # === Auto-copy to dashboard public folder
     dash_weather_dir = os.path.join(base_dir, "dashboard", "public", "Weather", str(today))
     os.makedirs(dash_weather_dir, exist_ok=True)
     shutil.copy(save_path, os.path.join(dash_weather_dir, "weather_data.json"))

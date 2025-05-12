@@ -1,0 +1,12 @@
+[BUG]: no found input "run_irrixa.py"
+
+## Command Line
+C:\Users\Gary Chislett\AppData\Local\Programs\Python\Python311\Scripts\pyarmor gen -O dist/ run_irrixa.py
+
+## Environments
+Python 3.11.8
+Pyarmor 9.1.6 (trial), 000000, non-profits
+Platform windows.x86_64
+Native windows.amd64
+Home C:\Users\Gary Chislett\.pyarmor
+

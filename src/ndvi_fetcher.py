@@ -19,8 +19,9 @@ ENABLE_GNDVI = True
 SAVE_PNG = True
 
 # === Absolute .env loader ===
-base_dir = os.path.dirname(os.path.dirname(__file__))
-env_path = os.path.join(base_dir, ".env")
+from pathlib import Path
+base_dir = Path(__file__).resolve().parents[2]
+env_path = base_dir / ".env"
 
 CLIENT_ID = None
 CLIENT_SECRET = None
@@ -36,8 +37,9 @@ print("\U0001f512 Forced raw .env load:")
 print("CLIENT_ID =", CLIENT_ID)
 print("CLIENT_SECRET =", "SET" if CLIENT_SECRET else "MISSING")
 
-if CLIENT_ID != "7cb7154c-6c15-421c-a5d9-f5a08c48fb2b":
-    raise Exception("\u274c Still using old or wrong CLIENT_ID — aborting")
+if not CLIENT_ID or len(CLIENT_ID) < 10:
+    raise Exception("❌ Invalid SentinelHub CLIENT_ID — aborting")
+
 
 print(f"⛨️  Using SentinelHub Client ID: {CLIENT_ID[:8]}... OK")
 

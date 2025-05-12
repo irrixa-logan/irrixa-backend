@@ -1,0 +1,13 @@
+{
+  "block": "D2_Bay_3",
+  "date": "2025-05-12",
+  "index": "GNDVI",
+  "mean": 0.7804360389709473,
+  "p80": 0.799077033996582,
+  "confidence_score": 100,
+  "nan_coverage": 0.0,
+  "fallback_used": false,
+  "fallback_date": null,
+  "cloud_affected": false,
+  "source": "sentinel"
+}
