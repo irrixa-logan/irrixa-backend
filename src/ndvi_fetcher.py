@@ -23,23 +23,17 @@ from pathlib import Path
 base_dir = Path(__file__).resolve().parents[2]
 env_path = base_dir / ".env"
 
-CLIENT_ID = None
-CLIENT_SECRET = None
+import os
 
-with open(env_path, 'r') as f:
-    for line in f:
-        if line.strip().startswith("SENTINELHUB_CLIENT_ID="):
-            CLIENT_ID = line.strip().split("=", 1)[1]
-        if line.strip().startswith("SENTINELHUB_CLIENT_SECRET="):
-            CLIENT_SECRET = line.strip().split("=", 1)[1]
+CLIENT_ID = os.getenv("SENTINELHUB_CLIENT_ID")
+CLIENT_SECRET = os.getenv("SENTINELHUB_CLIENT_SECRET")
 
-print("\U0001f512 Forced raw .env load:")
-print("CLIENT_ID =", CLIENT_ID)
+if not CLIENT_ID or not CLIENT_SECRET:
+    raise Exception("❌ Missing SentinelHub credentials in environment variables")
+
+print("🔒 Using environment variables:")
+print("CLIENT_ID =", CLIENT_ID[:8] + "...")
 print("CLIENT_SECRET =", "SET" if CLIENT_SECRET else "MISSING")
-
-if not CLIENT_ID or len(CLIENT_ID) < 10:
-    raise Exception("❌ Invalid SentinelHub CLIENT_ID — aborting")
-
 
 print(f"⛨️  Using SentinelHub Client ID: {CLIENT_ID[:8]}... OK")
 

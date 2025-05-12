@@ -25,3 +25,11 @@ def run_engine():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
+@app.route("/api/refresh_weather", methods=["POST"])
+def refresh_weather():
+    try:
+        subprocess.run(["python", "src/weather_fetcher.py"], check=True)
+        return jsonify({"status": "weather refreshed"}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
