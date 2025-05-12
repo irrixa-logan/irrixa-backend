@@ -34,3 +34,12 @@ def refresh_weather():
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
+@app.route("/api/refresh_weather", methods=["POST"])
+def refresh_weather():
+    try:
+        subprocess.run(["python", "src/weather_fetcher.py"], check=True)
+        return jsonify({"status": "weather refreshed"}), 200
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+       
+
