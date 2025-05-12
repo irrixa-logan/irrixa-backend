@@ -146,38 +146,29 @@ def fetch_index(geojson_path, index_type):
         source = "sentinel"
 
     with rasterio.open(tif_path) as src:
-        index_data, _ = mask(src, gdf.geometry, crop=True)
-        data = index_data[0]
-        data = np.where((data < -1) | (data > 1), np.nan, data)
-        nan_coverage = np.count_nonzero(np.isnan(data)) / data.size * 100
-    # Force fallback values if entire image is blank or unusable
-if np.isnan(np.nanmean(data)) or nan_coverage >= 99:
-    print(f"⚠️ {block_name} {index_type} image is unusable — forcing fallback values")
-    mean = 0.0
-    p80 = 0.0
-    score = 0
-    fallback_used = True
-    fallback_date = None
-else:
-    mean = float(np.nanmean(data))
-    p80 = float(np.nanpercentile(data, 80))
-    score = 100 if nan_coverage <= 10 else 75 if nan_coverage <= 30 else 50 if nan_coverage <= 50 else 0
-    fallback_used = False
-    fallback_date = None
-    fallback_data = load_last_valid_json(block_name, index_type) if (np.isnan(np.nanmean(data)) or nan_coverage > 50) else None
+    index_data, _ = mask(src, gdf.geometry, crop=True)
+    data = index_data[0]
+    data = np.where((data < -1) | (data > 1), np.nan, data)
+    nan_coverage = np.count_nonzero(np.isnan(data)) / data.size * 100
 
-        if fallback_data:
-            mean = fallback_data["mean"]
-            p80 = fallback_data["p80"]
-            score = fallback_data["confidence_score"]
-            fallback_used = True
-            fallback_date = fallback_data.get("fallback_date")
-        else:
-            mean = float(np.nanmean(data))
-            p80 = float(np.nanpercentile(data, 80))
-            score = 100 if nan_coverage <= 10 else 75 if nan_coverage <= 30 else 50 if nan_coverage <= 50 else 0
-            fallback_used = False
-            fallback_date = None
+    # Fallback logic (no crazy indent!)
+    if np.isnan(np.nanmean(data)) or nan_coverage > 50:
+        fallback_data = load_last_valid_json(block_name, index_type)
+    else:
+        fallback_data = None
+
+    if fallback_data:
+        mean = fallback_data["mean"]
+        p80 = fallback_data["p80"]
+        score = fallback_data["confidence_score"]
+        fallback_used = True
+        fallback_date = fallback_data.get("fallback_date")
+    else:
+        mean = float(np.nanmean(data))
+        p80 = float(np.nanpercentile(data, 80))
+        score = 100 if nan_coverage <= 10 else 75 if nan_coverage <= 30 else 50 if nan_coverage <= 50 else 0
+        fallback_used = False
+        fallback_date = None
 
         if SAVE_PNG:
             cmap = colormaps.get_cmap("RdYlGn")
