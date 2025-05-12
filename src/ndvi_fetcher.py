@@ -11,6 +11,7 @@ from rasterio.mask import mask
 from shapely.geometry import mapping
 from matplotlib import pyplot as plt
 from matplotlib import colormaps
+from pathlib import Path
 
 # === Configuration ===
 ENABLE_NDRE = True
@@ -18,8 +19,7 @@ ENABLE_EVI = True
 ENABLE_GNDVI = True
 SAVE_PNG = True
 
-import os
-
+# === Environment ===
 CLIENT_ID = os.getenv("SENTINELHUB_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SENTINELHUB_CLIENT_SECRET")
 
@@ -28,27 +28,25 @@ if not CLIENT_ID or not CLIENT_SECRET:
 
 print("🔒 Using environment variables:")
 print("CLIENT_ID =", CLIENT_ID[:8] + "...")
-print("CLIENT_SECRET =", "SET" if CLIENT_SECRET else "MISSING")
+print("CLIENT_SECRET =", "SET")
 
-# Set base_dir using __file__ safely for rest of script
-from pathlib import Path
+# === Paths ===
 base_dir = Path(__file__).resolve().parents[2]
-
-# === Output directories ===
 today = datetime.date.today()
 today_str = str(today)
 ndvi_output_dir = os.path.join(base_dir, "NDVI")
-os.makedirs(ndvi_output_dir, exist_ok=True)
 archive_dir = os.path.join(ndvi_output_dir, today_str)
-os.makedirs(archive_dir, exist_ok=True)
 planetscope_dir = os.path.join(base_dir, "Planetscope_Inputs", today_str)
 ndvi_history_path = os.path.join(base_dir, "NDVI_HISTORY", "ndvi_history.json")
+
+os.makedirs(ndvi_output_dir, exist_ok=True)
+os.makedirs(archive_dir, exist_ok=True)
 os.makedirs(os.path.dirname(ndvi_history_path), exist_ok=True)
 
 block_summaries = {}
 
 def get_access_token():
-    print(f"\n\U0001f510 Requesting token with client_id: {CLIENT_ID}")
+    print(f"\n🔐 Requesting token with client_id: {CLIENT_ID}")
     response = requests.post("https://services.sentinel-hub.com/oauth/token", data={
         "client_id": CLIENT_ID,
         "client_secret": CLIENT_SECRET,
@@ -61,21 +59,21 @@ def get_access_token():
 def generate_evalscript(index_type):
     return {
         "NDVI": """//VERSION=3
-function setup() { return {input: [\"B04\", \"B08\"], output: {bands: 1, sampleType: \"FLOAT32\"}}; }
+function setup() { return {input: ["B04", "B08"], output: {bands: 1, sampleType: "FLOAT32"}}; }
 function evaluatePixel(s) { return [(s.B08 - s.B04) / (s.B08 + s.B04)]; }
 """,
         "NDRE": """//VERSION=3
-function setup() { return {input: [\"B05\", \"B08\"], output: {bands: 1, sampleType: \"FLOAT32\"}}; }
+function setup() { return {input: ["B05", "B08"], output: {bands: 1, sampleType: "FLOAT32"}}; }
 function evaluatePixel(s) { return [(s.B08 - s.B05) / (s.B08 + s.B05)]; }
 """,
         "EVI": """//VERSION=3
-function setup() { return {input: [\"B02\", \"B04\", \"B08\"], output: {bands: 1, sampleType: \"FLOAT32\"}}; }
+function setup() { return {input: ["B02", "B04", "B08"], output: {bands: 1, sampleType: "FLOAT32"}}; }
 function evaluatePixel(s) {
   return [2.5 * (s.B08 - s.B04) / (s.B08 + 6 * s.B04 - 7.5 * s.B02 + 1)];
 }
 """,
         "GNDVI": """//VERSION=3
-function setup() { return {input: [\"B03\", \"B08\"], output: {bands: 1, sampleType: \"FLOAT32\"}}; }
+function setup() { return {input: ["B03", "B08"], output: {bands: 1, sampleType: "FLOAT32"}}; }
 function evaluatePixel(s) { return [(s.B08 - s.B03) / (s.B08 + s.B03)]; }
 """
     }[index_type]
@@ -86,19 +84,10 @@ def calculate_dimensions_from_bounds(geometry, max_dim=1500):
     ys = [pt[1] for pt in coords]
     width = max(xs) - min(xs)
     height = max(ys) - min(ys)
-
     if width == 0 or height == 0:
         return 500, 500
-
     aspect_ratio = width / height
-    if aspect_ratio > 1:
-        w = max_dim
-        h = int(max_dim / aspect_ratio)
-    else:
-        h = max_dim
-        w = int(max_dim * aspect_ratio)
-
-    return w, h
+    return (max_dim, int(max_dim / aspect_ratio)) if aspect_ratio > 1 else (int(max_dim * aspect_ratio), max_dim)
 
 def load_last_valid_json(block_name, index_type):
     json_path = os.path.join(ndvi_output_dir, f"{block_name.lower()}_{index_type.lower()}.json")
@@ -130,9 +119,12 @@ def fetch_index(geojson_path, index_type):
         payload = {
             "input": {
                 "bounds": {"geometry": geometry, "properties": {"crs": "http://www.opengis.net/def/crs/EPSG/0/4326"}},
-                "data": [{"type": "sentinel-2-l2a", "dataFilter": {"mosaickingOrder": "mostRecent", "timeRange": {
-                    "from": f"{datetime.date.today() - datetime.timedelta(days=10)}T00:00:00Z",
-                    "to": f"{datetime.date.today()}T23:59:59Z"}}}]
+                "data": [{"type": "sentinel-2-l2a", "dataFilter": {
+                    "mosaickingOrder": "mostRecent",
+                    "timeRange": {
+                        "from": f"{today - datetime.timedelta(days=10)}T00:00:00Z",
+                        "to": f"{today}T23:59:59Z"
+                    }}}]
             },
             "evalscript": generate_evalscript(index_type),
             "output": {"width": width, "height": height, "responses": [{"identifier": "default", "format": {"type": "image/tiff"}}]}
@@ -146,29 +138,25 @@ def fetch_index(geojson_path, index_type):
         source = "sentinel"
 
     with rasterio.open(tif_path) as src:
-    index_data, _ = mask(src, gdf.geometry, crop=True)
-    data = index_data[0]
-    data = np.where((data < -1) | (data > 1), np.nan, data)
-    nan_coverage = np.count_nonzero(np.isnan(data)) / data.size * 100
+        index_data, _ = mask(src, gdf.geometry, crop=True)
+        data = index_data[0]
+        data = np.where((data < -1) | (data > 1), np.nan, data)
+        nan_coverage = np.count_nonzero(np.isnan(data)) / data.size * 100
 
-    # Fallback logic (no crazy indent!)
-    if np.isnan(np.nanmean(data)) or nan_coverage > 50:
-        fallback_data = load_last_valid_json(block_name, index_type)
-    else:
-        fallback_data = None
+        fallback_data = load_last_valid_json(block_name, index_type) if (np.isnan(np.nanmean(data)) or nan_coverage > 50) else None
 
-    if fallback_data:
-        mean = fallback_data["mean"]
-        p80 = fallback_data["p80"]
-        score = fallback_data["confidence_score"]
-        fallback_used = True
-        fallback_date = fallback_data.get("fallback_date")
-    else:
-        mean = float(np.nanmean(data))
-        p80 = float(np.nanpercentile(data, 80))
-        score = 100 if nan_coverage <= 10 else 75 if nan_coverage <= 30 else 50 if nan_coverage <= 50 else 0
-        fallback_used = False
-        fallback_date = None
+        if fallback_data:
+            mean = fallback_data["mean"]
+            p80 = fallback_data["p80"]
+            score = fallback_data["confidence_score"]
+            fallback_used = True
+            fallback_date = fallback_data.get("fallback_date")
+        else:
+            mean = float(np.nanmean(data))
+            p80 = float(np.nanpercentile(data, 80))
+            score = 100 if nan_coverage <= 10 else 75 if nan_coverage <= 30 else 50 if nan_coverage <= 50 else 0
+            fallback_used = False
+            fallback_date = None
 
         if SAVE_PNG:
             cmap = colormaps.get_cmap("RdYlGn")
@@ -199,7 +187,8 @@ def fetch_index(geojson_path, index_type):
             try:
                 with open(ndvi_history_path, "r") as f:
                     history = json.load(f)
-            except: history = {}
+            except:
+                history = {}
             history[block_name] = mean
             with open(ndvi_history_path, "w") as f:
                 json.dump(history, f, indent=2)
@@ -218,7 +207,7 @@ def fetch_index(geojson_path, index_type):
 if __name__ == "__main__":
     block_dir = os.path.join(base_dir, "Blocks")
     block_files = glob.glob(os.path.join(block_dir, "*.geojson"))
-    print(f"\U0001f50d Found {len(block_files)} block files")
+    print(f"🔍 Found {len(block_files)} block files")
     for geojson_path in block_files:
         for index in ["NDVI", "NDRE", "EVI", "GNDVI"]:
             if ((index == "NDRE" and ENABLE_NDRE) or
